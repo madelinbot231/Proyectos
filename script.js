@@ -88,10 +88,83 @@ function showEfectivoSection() {
         }
     });
     document.getElementById("finalizarEfectivo").addEventListener("click", function () {
+        generarPDF();
         alert("Gracias por tu pedido. El pago se realizará al momento de la entrega o consumo.");
     });
 }
 
+function validarTarjeta() {
+    const numeroTarjeta = document.getElementById("numeroTarjeta").value.trim();
+    const fechaExp = document.getElementById("fechaExp").value.trim();
+    const cvv = document.getElementById("cvv").value.trim();
+
+    const regexTarjeta = /^\d{16}$/;
+    const regexFecha = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const regexCVV = /^\d{3}$/;
+
+    if (!regexTarjeta.test(numeroTarjeta)) {
+        alert("Número de tarjeta inválido. Debe contener 16 dígitos.");
+        return false;
+    }
+
+    if (!regexFecha.test(fechaExp)) {
+        alert("Fecha de expiración inválida. Debe tener el formato MM/AA.");
+        return false;
+    }
+
+    const [mes, año] = fechaExp.split("/").map(Number);
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear() % 100;
+    const mesActual = fechaActual.getMonth() + 1;
+
+    if (año < añoActual || (año === añoActual && mes < mesActual)) {
+        alert("La tarjeta está expirada.");
+        return false;
+    }
+
+    if (!regexCVV.test(cvv)) {
+        alert("CVV inválido. Debe contener 3 dígitos.");
+        return false;
+    }
+
+    return true;
+}
+
+function generarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const nombre = document.getElementById("nombre").value;
+    const fecha = document.getElementById("Fecha").value;
+    const direccion = document.getElementById("direccion") ? document.getElementById("direccion").value : "N/A";
+    const telefono = document.getElementById("telefono") ? document.getElementById("telefono").value : "N/A";
+    const detalleHTML = document.getElementById("detallePedido").innerHTML;
+    const total = parseFloat(document.getElementById("detallePedido").dataset.total).toFixed(2);
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = detalleHTML;
+    const productos = tempDiv.querySelectorAll("ul li");
+
+    doc.setFontSize(14);
+    doc.text("Detalle del Pedido", 10, 10);
+    doc.setFontSize(11);
+    doc.text(`Nombre: ${nombre}`, 10, 20);
+    doc.text(`Fecha: ${fecha}`, 10, 30);
+    doc.text(`Dirección: ${direccion}`, 10, 40);
+    doc.text(`Teléfono: ${telefono}`, 10, 50);
+    doc.text("Productos:", 10, 60);
+
+    let y = 70;
+    productos.forEach(p => {
+        doc.text(`- ${p.textContent}`, 10, y);
+        y += 10;
+    });
+
+    doc.text(`Total a pagar: $${total}`, 10, y + 10);
+    doc.save("detalle_pedido.pdf");
+}
+
 document.getElementById("finalizarTarjeta").addEventListener("click", function () {
+    if (!validarTarjeta()) return;
+    generarPDF();
     alert("Pago con tarjeta realizado con éxito. ¡Gracias por tu pedido!");
 });
