@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Virtual</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#resenas">Reseñas</a></li>
+      <li><a href="#descripcion">Descripción</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="inicio" class="seccion activa">
+  <h1>Bienvenido a Susurro de las Páginas</h1>
+  <p>Sumérgete en un mundo de historias cautivadoras, donde cada página te llevará a vivir emocionantes 
+    aventuras y apasionantes romances que te mantendrán enganchado.</p>
+  <img src="biblioteca.jpg" alt="biblioteca">
+</section>
+
+<section id="catalogo" class="seccion">
+  <h2>Catálogo de Libros</h2>
+  <div class="botones-ordenar">
+    <button id="ordenarTitulo">Ordenar por Título</button>
+    <button id="ordenarAutor">Ordenar por Autor</button>
+  <div id="filtros">
+    <button onclick="filtrarLibros('Dark Romance')">Dark Romance</button>
+    <button onclick="filtrarLibros('Romance')">Romance</button>
+    <button onclick="filtrarLibros('')">Mostrar Todos</button>
+  </div>
+  <ul id="listaLibros"></ul>
+</section>
+
+<section id="resenas" class="seccion">
+  <h2>Reseñas</h2>
+  <div id="listaResenas"></div>
+</section>
+
+<section id="descripcion" class="seccion">
+  <h2>Descripción del Libro</h2>
+  <div id="detalleLibro">
+    <p>Selecciona un libro del catálogo para ver su descripción.</p>
+  </div>
+</section>
+
+<section id="contacto" class="seccion">
+  <h2>Contacto</h2>
+  <p>Para más información, contáctanos en <a href="mailto:info@biblioteca.com">info@biblioteca.com</a>.</p>
+</section>
+
+<script src="catalogo.js"></script>
+</body>
+</html>
