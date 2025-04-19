@@ -31,10 +31,13 @@
   <div class="botones-ordenar">
     <button id="ordenarTitulo">Ordenar por Título</button>
     <button id="ordenarAutor">Ordenar por Autor</button>
+  </div>
   <div id="filtros">
     <button onclick="filtrarLibros('Dark Romance')">Dark Romance</button>
     <button onclick="filtrarLibros('Romance')">Romance</button>
-    <button onclick="filtrarLibros('')">Mostrar Todos</button>
+    <button onclick="filtrarLibros('Contemporaneo')">Contemporaneo</button>
+    <button onclick="filtrarLibros('Fantasia')">Fantasia</button>
+    <button onclick="filtrarLibros('Suspenso')">Suspenso</button>
   </div>
   <ul id="listaLibros"></ul>
 </section>
@@ -51,11 +54,9 @@
   </div>
 </section>
 
-<section id="contacto" class="seccion">
-  <h2>Contacto</h2>
-  <p>Para más información, contáctanos en <a href="mailto:info@biblioteca.com">info@biblioteca.com</a>.</p>
+<section id="compra" class="seccion">
+  <h2>Compra de Libros </h2>
 </section>
-
-<script src="catalogo.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
