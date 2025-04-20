@@ -100,3 +100,12 @@ button:hover {
         margin: 10px 0;
     }
 }
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh; 
+    text-align: center;
+    padding-top: 20px;
+}
