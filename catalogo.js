@@ -390,3 +390,100 @@ document.addEventListener("DOMContentLoaded", () => {
   renderizarLibros(libros);
   window.navegarA = navegarA;
 });
+const librosCompra = [
+  { titulo: "Los Margenes del Juego", imagen: "margen.jpg", precio: "$390" },
+  { titulo: "Hechizado", imagen: "hechizados.jpg", precio: "$290" },
+  { titulo: "Inevitable Destrucción", imagen: "destruccion.jpg", precio: "$360" },
+  { titulo: "De Sangre y Cenizas", imagen: "seniza.jpg", precio: "$295" },
+  { titulo: "Damian", imagen: "damian.jpg", precio: "$360" },
+  { titulo: 'Pretty Monster', imagen:'dark.jpg' , precio: '$350'},
+  { titulo: 'Hunt Me Darling', imagen:'hunde.jpg' , precio: '$ 340'},
+  { titulo: 'Hide Me Darling', imagen:'hide.jpg' , precio: '$ 330'},
+  { titulo: 'Haunting Adeline', imagen:'adeline.jpg' , precio: ''},
+  { titulo: 'Haunted Love', imagen:'lovdha.jpg' , precio: '$340'},
+  { titulo: '365 días', imagen:'365.jpg' , precio: '$ 390'},
+  { titulo: 'La Mecanica del Corazón', imagen:'corme.jpg' , precio: '$230'},
+  { titulo: 'El Fabricante de Lagrimas', imagen:'lagrimas.jpg' , precio: '$500'},
+  { titulo: 'A dos metros de ti', imagen:'metros.jpg' , precio: '$260'},
+  { titulo: 'Twisted Love', imagen:'tlove.jpg' , precio: '$390'},
+  { titulo: 'Twisted Games', imagen:'game.jpg' , precio: '$ 390'},
+  { titulo: 'Twisted Hate', imagen:'hate.jpg' , precio: '$ 390'},
+  { titulo: 'Twisted Lies', imagen:'lies.jpg' , precio: '$ 390'},
+  { titulo: 'CIRCE', imagen:'circe.jpg' , precio: '$ 230'},
+  { titulo: 'Bridgerton - El duque y yo', imagen:'duque_.jpg' , precio: '$ 400'},
+  { titulo: 'Bridgerton - El visconde que me amo', imagen:'conde.jpg' , precio: '$390'},
+  { titulo: 'Bridgerton - Te doy mi corazón', imagen:'coraon.jpg' , precio: '$ 380'},
+  { titulo: 'Bridgerton - Seduciendo a Mr.Bridgerton', imagen:'señorb.jpg' , precio: '$ 380'},
+  { titulo: 'Orgullo y Prejuicio', imagen:'Orgullo.jpg' , precio: '$ 390'},
+  { titulo: 'El Perfume del Rey', imagen:'perfume.jpg' , precio: '$ 260'},
+  { titulo: 'Las Cadenas del Rey', imagen:'cadenas.jpg' , precio: '$ 270'},
+  { titulo: 'El Corazón del Rey', imagen:'rey1.jpg' , precio: '$280'},
+  { titulo: 'FLEUR', imagen:'fleur.jpg' , precio: '$ 290'},
+  { titulo: 'Insania', imagen:'insania.jpg' , precio: '$ 320'},
+  { titulo: 'Antes de Diciembre', imagen:'antes.jpg' , precio: '$ 360'},
+  { titulo: 'El Laberinto del Fauno', imagen:'fauno.jpg' , precio: '$ 240'}
+];
+
+function renderizarCompra() {
+  const compraSection = document.getElementById('compra');
+  compraSection.innerHTML = '<h2>Compra tu Libro</h2><div id="librosCompra" style="display:flex; flex-wrap:wrap; gap:20px;"></div>';
+  const librosCompraDiv = document.getElementById('librosCompra');
+
+  librosCompra.forEach((libro, indice) => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <img src="${libro.imagen}" alt="${libro.titulo}" style="width:150px; height:auto; border-radius:8px;"><br>
+      <strong>${libro.titulo}</strong><br>
+      <span>${libro.precio}</span><br>
+      <button onclick="mostrarFormularioCompra(${indice})">Comprar</button>
+    `;
+    div.style.textAlign = "center";
+    div.style.padding = "10px";
+    div.style.background = "#fff";
+    div.style.border = "2px solid #a18434";
+    div.style.borderRadius = "8px";
+    librosCompraDiv.appendChild(div);
+  });
+}
+
+window.mostrarFormularioCompra = function(indice) {
+  const libro = librosCompra[indice];
+  const compraSection = document.getElementById('compra');
+  compraSection.innerHTML = `
+    <h2>Finalizar Compra</h2>
+    <form id="formCompra">
+      <input type="hidden" name="libro" value="${libro.titulo}">
+      <label>Nombre:</label><br>
+      <input type="text" name="nombre" required><br><br>
+      <label>Teléfono:</label><br>
+      <input type="text" name="telefono" required><br><br>
+      <label>Domicilio:</label><br>
+      <input type="text" name="domicilio" required><br><br>
+      <label>Forma de Pago:</label><br>
+      <select name="pago" required>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Tarjeta">Tarjeta</option>
+        <option value="Transferencia">Transferencia</option>
+      </select><br><br>
+      <label>Correo Electrónico:</label><br>
+      <input type="email" name="correo" required><br><br>
+      <button type="submit">Finalizar Compra</button>
+    </form>
+    <br>
+    <button onclick="renderizarCompra()">Cancelar</button>
+  `;
+
+  document.getElementById('formCompra').addEventListener('submit', function(e) {
+    e.preventDefault();
+    emailjs.sendForm('service_1ys9qie', 'template_511qgfc', this)
+      .then(() => {
+        alert('¡Compra realizada! Revisa tu correo.');
+        renderizarCompra();
+      }, (error) => {
+        alert('Error al enviar el correo: ' + JSON.stringify(error));
+      });
+  });
+};
+document.addEventListener("DOMContentLoaded", () => {
+  renderizarCompra();
+});
