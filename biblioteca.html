@@ -14,16 +14,18 @@
       <li><a href="#catalogo">Catálogo</a></li>
       <li><a href="#resenas">Reseñas</a></li>
       <li><a href="#descripcion">Descripción</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#compra">Shoping</a></li> 
     </ul>
   </nav>
 </header>
 
 <section id="inicio" class="seccion activa">
+  <div class="contenedor">
   <h1>Bienvenido a Susurro de las Páginas</h1>
   <p>Sumérgete en un mundo de historias cautivadoras, donde cada página te llevará a vivir emocionantes 
     aventuras y apasionantes romances que te mantendrán enganchado.</p>
   <img src="biblioteca.jpg" alt="biblioteca">
+</div>
 </section>
 
 <section id="catalogo" class="seccion">
@@ -56,7 +58,14 @@
 
 <section id="compra" class="seccion">
   <h2>Compra de Libros </h2>
+  <div id="librosCompra"></div>
 </section>
-<script src="catalogo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init('6z0fxfewBSDDvdxiw');
+  })();
+</script>
+<script src="script.js"></script>
 </body>
 </html>
