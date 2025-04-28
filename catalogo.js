@@ -452,13 +452,15 @@ window.mostrarFormularioCompra = function(indice) {
   compraSection.innerHTML = `
     <h2>Finalizar Compra</h2>
     <form id="formCompra">
-      <input type="hidden" name="libro" value="${libro.titulo}">
+      <input type="hidden" name="precio" value="${libro.precio}">
       <label>Nombre:</label><br>
       <input type="text" name="nombre" required><br><br>
       <label>Teléfono:</label><br>
       <input type="text" name="telefono" required><br><br>
       <label>Domicilio:</label><br>
       <input type="text" name="domicilio" required><br><br>
+      <label>Total del Libro:</label><br>
+      <input type="text" value="${libro.precio}" disabled style="background-color:#eee;"><br><br>
       <label>Forma de Pago:</label><br>
       <select name="pago" required>
         <option value="Efectivo">Efectivo</option>
