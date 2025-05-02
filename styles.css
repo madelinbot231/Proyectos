@@ -1,111 +1,155 @@
 body {
     margin: 0;
-    font-family: "Poppins", sans-serif; 
-    background-color: #ffdd82; 
+    font-family: "Poppins", sans-serif;
+    background-color: #fdf7f2; 
+    color: #5a5a5a; 
 }
+
 header {
-    background: linear-gradient(90deg, #583111, #a18434); 
-    color: #fff;
-    padding: 15px 0; 
+    background: linear-gradient(90deg, #ffaaa5, #ffd3b6);
+    color: #ffffff;
+    padding: 20px 0;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
     padding: 0;
 }
+
 nav ul li {
     margin: 0 20px;
 }
+
 nav ul li a {
-    color: #a18434;
+    color: #6d6875; 
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
     transition: color 0.3s ease;
 }
+
 nav ul li a:hover {
-    color: #fff; 
+    color: #ffaaa5; 
 }
+
 .seccion {
     display: none;
-    padding: 25px;
-    background: #fff2d4;
-    border-radius: 10px; 
+    padding: 30px;
+    background: #fde2e4; 
+    border-radius: 12px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
 }
+
 .seccion.activa {
     display: block;
 }
-#listaLibros {
-    list-style: none;
+
+#listaLibros, #shoppingItems { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
     padding: 0;
 }
-#listaLibros li {
-    background: #fff;
-    border: 2px solid #a18434; 
-    border-radius: 8px; 
-    padding: 12px;
-    margin-bottom: 10px;
-    cursor: pointer;
+
+#listaLibros li, #shoppingItems li {
+    flex: 1 1 220px;
+    max-width: 280px;
+    min-height: 140px;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    background: #fff1e6; 
+    border: 2px solid #ffaaa5;
+    color: #6d6875;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     transition: background 0.3s ease, transform 0.2s ease;
 }
-#listaLibros li:hover {
-    background: #ffe1a8;
+
+#listaLibros li:hover, #shoppingItems li:hover {
+    background: #ffd3b6; 
     transform: scale(1.02);
 }
-.botones-ordenar {
-    margin-bottom: 20px;
-}
 button {
-    padding: 12px 20px;
-    border: 2px solid #a18434;
-    background-color: #583111;
-    color: #ffffff;
+    padding: 10px 18px;
+    font-size: 14px;
+    border: 1px solid #ffaaa5;
+    background-color: #ffd3b6;
+    color: #6d6875;
     cursor: pointer;
-    margin-right: 10px;
-    border-radius: 5px; 
+    margin-right: 5px;
+    border-radius: 6px;
     transition: background 0.3s ease, transform 0.2s ease;
 }
+
 button:hover {
-    background-color: #a18434;
+    background-color: #ffaaa5;
+    color: #ffffff;
     transform: scale(1.05);
 }
-/* Estilos para los filtros de categorías */
-#filtros {
-    margin-bottom: 20px;
+.botones-ordenar {
+    margin-bottom: 25px;
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    gap: 20px;
+}
+
+#filtros {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 #filtros button {
-    padding: 12px 20px;
-    border: 2px solid #a18434;
-    background-color: #583111;
-    color: #ffffff;
-    cursor: pointer;
-    border-radius: 5px; 
-    transition: background 0.3s ease, transform 0.2s ease;
+    padding: 8px 15px;
+    font-size: 14px;
+    border: 1px solid #ffaaa5;
+    border-radius: 8px;
+    background-color: #fff1e6;
 }
+
 #filtros button:hover {
-    background-color: #a18434;
-    transform: scale(1.05);
+    background-color: #ffaaa5;
+    transform: scale(1.02);
 }
+#detalleLibro, #listaResenas {
+    padding: 20px;
+    font-size: 15px;
+    background: #fde2e4;
+    border-radius: 12px;
+    max-width: 550px;
+    margin: auto;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
         align-items: center;
     }
+
     nav ul li {
         margin: 10px 0;
     }
 }
+
 .contenedor {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 70vh; 
+    min-height: 70vh;
     text-align: center;
-    padding-top: 20px;
+    padding-top: 25px;
 }
