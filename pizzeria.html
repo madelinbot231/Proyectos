@@ -4,22 +4,70 @@
     <title>Pedido de Pizza</title>
     <style>
         body {
-            background-color: rgb(151, 88, 156);
-            font-family: Arial, sans-serif;
-        }
-        .seccion { 
-            display: none;
-        }
-        .activa {
-            display: block;
-        }
-        form {
-            margin: 20px;
-        }
-        label, input, select, button {
-            display: block;
-            margin-bottom: 10px;
-        }
+    background-color: #f8e1f4;
+    font-family: "Poppins", sans-serif;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 20px;
+    color: #4a4a4a;
+}
+.seccion {
+    display: none;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+.activa {
+    display: block;
+}
+label {
+    font-weight: bold;
+    color: #6d6875;
+}
+
+input, select, button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #d39eb5;
+    font-size: 16px;
+}
+
+input:focus, select:focus {
+    border-color: #b981a7;
+    outline: none;
+}
+button {
+    background-color: #d39eb5;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+}
+
+button:hover {
+    background-color: #b981a7;
+    transform: scale(1.05);
+}
+.checkbox-container {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8e1f4;
+    border-radius: 8px;
+}
     </style>
 </head>
 <body>
