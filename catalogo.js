@@ -437,11 +437,18 @@ function renderizarCompra() {
       <span>${libro.precio}</span><br>
       <button onclick="mostrarFormularioCompra(${indice})">Comprar</button>
     `;
+    div.style.display = "flex";
+    div.style.flexDirection = "column";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
     div.style.textAlign = "center";
-    div.style.padding = "10px";
+    div.style.paddingTop = "25px";
+    div.style.minHeight = "70vh"; 
     div.style.background = "#fff";
     div.style.border = "2px solid #a18434";
     div.style.borderRadius = "8px";
+    div.style.width = "200px"; 
+    div.style.height = "230px";
     librosCompraDiv.appendChild(div);
   });
 }
