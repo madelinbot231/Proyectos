@@ -1,129 +1,149 @@
-document.getElementById("comenzar").addEventListener("click", function () {
+document.getElementById("comenzar").addEventListener("click", () => {
     document.getElementById("bienvenida").classList.remove("activa");
     document.getElementById("formulario-seccion").classList.add("activa");
 });
 
-document.getElementById("calcular").addEventListener("click", function () {
-    const nombre = document.getElementById("nombre").value;
-    const Fecha = document.getElementById("Fecha").value;
+document.getElementById("calcular").addEventListener("click", () => {
+    const nombre = document.getElementById("nombre").value.trim();
+    const fecha = document.getElementById("fecha").value;
 
-    const pizza1 = parseFloat(document.getElementById("Pizza1").value);
-    const pizza2 = parseFloat(document.getElementById("Pizza2").value);
-    const pizza3 = parseFloat(document.getElementById("Pizza3").value);
+    if (!nombre || !fecha) {
+        alert("Por favor completa tu nombre y la fecha.");
+        return;
+    }
 
-    const complementos = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
-    let complementosTotal = 0;
-    let complementosDetalle = [];
-
-    complementos.forEach((complemento) => {
-        complementosTotal += parseFloat(complemento.value);
-        complementosDetalle.push(complemento.nextElementSibling.textContent);
+    const pizzas = ["pizza1", "pizza2", "pizza3"].map(id => {
+        const el = document.getElementById(id);
+        return {
+            nombre: el.options[el.selectedIndex].text,
+            precio: parseFloat(el.value) || 0
+        };
     });
 
-    const total = pizza1 + pizza2 + pizza3 + complementosTotal;
-    document.getElementById("detalle-seccion").classList.add("activa");
-    document.getElementById("formulario-seccion").classList.remove("activa");
+    const complementos = Array.from(document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked'));
+    let complementosTotal = 0;
+    const complementosDetalle = complementos.map(comp => {
+        complementosTotal += parseFloat(comp.value) || 0;
+        return comp.closest("label")?.textContent.trim() || "";
+    });
+
+    const total = pizzas.reduce((sum, p) => sum + p.precio, 0) + complementosTotal;
+
     document.getElementById("detallePedido").innerHTML = `
         <strong>Nombre:</strong> ${nombre}<br>
-        <strong>Fecha:</strong> ${Fecha}<br>
+        <strong>Fecha:</strong> ${fecha}<br>
         <strong>Productos:</strong> 
-        <ul>
-            <li>Pizza Mexicana ($${pizza1.toFixed(2)})</li>
-            <li>Pizza Pepperoni ($${pizza2.toFixed(2)})</li>
-            <li>Pizza Hawaiana ($${pizza3.toFixed(2)})</li>
-        </ul>
-        <strong>Complementos:</strong> ${complementosDetalle.join(", ")}<br>
+        <ul>${pizzas.map(p => `<li>${p.nombre}</li>`).join("")}</ul>
+        <strong>Complementos:</strong> ${complementosDetalle.join(", ") || "Ninguno"}<br>
         <strong>Total:</strong> $${total.toFixed(2)}
     `;
     document.getElementById("detallePedido").dataset.total = total;
+
+    document.getElementById("formulario-seccion").classList.remove("activa");
+    document.getElementById("detalle-seccion").classList.add("activa");
 });
 
-document.getElementById("continuarPago").addEventListener("click", function () {
-    const metodoPago = document.querySelector('input[name="metodoPago"]:checked').value;
-    const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked').value;
+document.getElementById("continuarPago").addEventListener("click", () => {
+    const metodoPago = document.querySelector('input[name="metodoPago"]:checked');
+    const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
 
-    if (tipoServicio === "Entrega a domicilio") {
-        document.getElementById("detalle-seccion").classList.remove("activa");
+    if (!metodoPago || !tipoServicio) {
+        alert("Por favor selecciona un método de pago y tipo de servicio.");
+        return;
+    }
+
+    document.getElementById("detalle-seccion").classList.remove("activa");
+
+    if (tipoServicio.value === "Entrega a domicilio") {
         document.getElementById("domicilio-seccion").classList.add("activa");
     } else {
-        document.getElementById("detalle-seccion").classList.remove("activa");
-        if (metodoPago === "Efectivo") {
-            showEfectivoSection();
-        } else if (metodoPago === "Tarjeta") {
-            document.getElementById("tarjeta-seccion").classList.add("activa");
-        }
+        metodoPago.value === "Efectivo" ? showEfectivoSection() : document.getElementById("tarjeta-seccion").classList.add("activa");
     }
 });
 
-document.getElementById("continuarDomicilio").addEventListener("click", function () {
-    document.getElementById("domicilio-seccion").classList.remove("activa");
-    const metodoPago = document.querySelector('input[name="metodoPago"]:checked').value;
-    if (metodoPago === "Efectivo") {
-        showEfectivoSection();
-    } else if (metodoPago === "Tarjeta") {
-        document.getElementById("tarjeta-seccion").classList.add("activa");
+document.getElementById("continuarDomicilio").addEventListener("click", () => {
+    const direccion = document.getElementById("direccion").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+
+    if (!direccion || !telefono) {
+        alert("Por favor completa la dirección y teléfono.");
+        return;
     }
+
+    const metodoPago = document.querySelector('input[name="metodoPago"]:checked');
+    document.getElementById("domicilio-seccion").classList.remove("activa");
+    metodoPago.value === "Efectivo" ? showEfectivoSection() : document.getElementById("tarjeta-seccion").classList.add("activa");
+});
+
+document.getElementById("finalizarTarjeta").addEventListener("click", () => {
+    if (!validarTarjeta()) return;
+
+    generarPDF();
+    alert("Gracias por tu pedido. El pago se ha procesado con tarjeta.");
+    document.getElementById("tarjeta-seccion").classList.remove("activa");
+    document.getElementById("feedback-seccion").classList.add("activa");
 });
 
 function showEfectivoSection() {
-    const total = parseFloat(document.getElementById("detallePedido").dataset.total);
+    const total = parseFloat(document.getElementById("detallePedido").dataset.total) || 0;
     const efectivoSection = document.getElementById("efectivo-seccion");
+
     efectivoSection.innerHTML = `
         <h1>Pago en Efectivo</h1>
         <p>Total a pagar: $${total.toFixed(2)}</p>
-        <label for="billete">Ingrese con qué billete va a pagar:</label>
-        <input type="number" id="billete" name="billete" required>
+        <label for="billete">¿Con qué cantidad pagas?</label>
+        <input type="number" id="billete" required>
         <button type="button" id="calcularCambio">Calcular Cambio</button>
         <p id="cambio"></p>
         <button type="button" id="finalizarEfectivo">Finalizar Pedido</button>
     `;
+
     efectivoSection.classList.add("activa");
-    document.getElementById("calcularCambio").addEventListener("click", function () {
+
+    document.getElementById("calcularCambio").addEventListener("click", () => {
         const billete = parseFloat(document.getElementById("billete").value);
-        const cambio = billete - total;
-        if (cambio >= 0) {
-            document.getElementById("cambio").textContent = `Cambio: $${cambio.toFixed(2)}`;
-        } else {
-            document.getElementById("cambio").textContent = "El billete no cubre el monto total.";
+        if (isNaN(billete)) {
+            alert("Ingresa una cantidad válida.");
+            return;
         }
+        const cambio = billete - total;
+        document.getElementById("cambio").textContent = cambio >= 0
+            ? `Cambio: $${cambio.toFixed(2)}`
+            : "El billete no cubre el monto total.";
     });
-    document.getElementById("finalizarEfectivo").addEventListener("click", function () {
+
+    document.getElementById("finalizarEfectivo").addEventListener("click", () => {
         generarPDF();
         alert("Gracias por tu pedido. El pago se realizará al momento de la entrega o consumo.");
+        efectivoSection.classList.remove("activa");
+        document.getElementById("feedback-seccion").classList.add("activa");
     });
 }
 
 function validarTarjeta() {
-    const numeroTarjeta = document.getElementById("numeroTarjeta").value.trim();
-    const fechaExp = document.getElementById("fechaExp").value.trim();
+    const numero = document.getElementById("numeroTarjeta").value.trim();
+    const fecha = document.getElementById("fechaExp").value.trim();
     const cvv = document.getElementById("cvv").value.trim();
 
     const regexTarjeta = /^\d{16}$/;
     const regexFecha = /^(0[1-9]|1[0-2])\/\d{2}$/;
-    const regexCVV = /^\d{3}$/;
+    const regexCVV = /^\d{3,4}$/;
 
-    if (!regexTarjeta.test(numeroTarjeta)) {
-        alert("Número de tarjeta inválido. Debe contener 16 dígitos.");
+    const [mes, anio] = fecha.split("/").map(Number);
+    const ahora = new Date();
+    const mesActual = ahora.getMonth() + 1;
+    const anioActual = ahora.getFullYear() % 100;
+
+    if (!regexTarjeta.test(numero)) {
+        alert("Número de tarjeta inválido.");
         return false;
     }
-
-    if (!regexFecha.test(fechaExp)) {
-        alert("Fecha de expiración inválida. Debe tener el formato MM/AA.");
+    if (!regexFecha.test(fecha) || anio < anioActual || (anio === anioActual && mes < mesActual)) {
+        alert("Fecha de expiración inválida.");
         return false;
     }
-
-    const [mes, año] = fechaExp.split("/").map(Number);
-    const fechaActual = new Date();
-    const añoActual = fechaActual.getFullYear() % 100;
-    const mesActual = fechaActual.getMonth() + 1;
-
-    if (año < añoActual || (año === añoActual && mes < mesActual)) {
-        alert("La tarjeta está expirada.");
-        return false;
-    }
-
     if (!regexCVV.test(cvv)) {
-        alert("CVV inválido. Debe contener 3 dígitos.");
+        alert("CVV inválido.");
         return false;
     }
 
@@ -131,12 +151,16 @@ function validarTarjeta() {
 }
 
 function generarPDF() {
+    generarPDFyObtenerBase64(() => {});
+}
+
+function generarPDFyObtenerBase64(callback) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const nombre = document.getElementById("nombre").value;
-    const fecha = document.getElementById("Fecha").value;
-    const direccion = document.getElementById("direccion") ? document.getElementById("direccion").value : "N/A";
-    const telefono = document.getElementById("telefono") ? document.getElementById("telefono").value : "N/A";
+    const fecha = document.getElementById("fecha").value;
+    const direccion = document.getElementById("direccion")?.value || "N/A";
+    const telefono = document.getElementById("telefono")?.value || "N/A";
     const detalleHTML = document.getElementById("detallePedido").innerHTML;
     const total = parseFloat(document.getElementById("detallePedido").dataset.total).toFixed(2);
 
@@ -159,12 +183,32 @@ function generarPDF() {
         y += 10;
     });
 
-    doc.text(`Total a pagar: $${total}`, 10, y + 10);
-    doc.save("detalle_pedido.pdf");
+    doc.text(`Total: $${total}`, 10, y + 10);
+    const base64PDF = doc.output("datauristring").split(',')[1];
+    callback(base64PDF);
 }
 
-document.getElementById("finalizarTarjeta").addEventListener("click", function () {
-    if (!validarTarjeta()) return;
-    generarPDF();
-    alert("Pago con tarjeta realizado con éxito. ¡Gracias por tu pedido!");
+document.getElementById("enviarCorreo").addEventListener("click", () => {
+    const nombre = document.getElementById("nombreCliente").value.trim();
+    const correo = document.getElementById("correoCliente").value.trim();
+    const comentario = document.getElementById("comentario").value.trim();
+
+    if (!nombre || !correo) {
+        alert("Por favor, completa tu nombre y correo.");
+        return;
+    }
+
+    generarPDFyObtenerBase64((base64PDF) => {
+        emailjs.send("service_1ys9qie", "template_vdgeomf", {
+            nombre,
+            email: correo,
+            mensaje: comentario,
+            pdf_file: base64PDF
+        }).then(() => {
+            alert("Correo enviado con éxito.");
+        }).catch(error => {
+            console.error("Error al enviar el correo:", error);
+            alert("Hubo un error al enviar el correo.");
+        });
+    });
 });
