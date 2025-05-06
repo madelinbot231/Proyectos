@@ -445,7 +445,7 @@ function renderizarCompra() {
     div.style.paddingTop = "25px";
     div.style.minHeight = "70vh"; 
     div.style.background = "#fff";
-    div.style.border = "2px solid #a18434";
+    div.style.border = "2px solidrgb(255, 171, 206)";
     div.style.borderRadius = "8px";
     div.style.width = "200px"; 
     div.style.height = "230px";
