@@ -445,39 +445,99 @@ function renderizarCompra() {
     librosCompraDiv.appendChild(div);
   });
 }
-
 window.mostrarFormularioCompra = function(indice) {
   const libro = librosCompra[indice];
+  const precioNumerico = parseFloat(libro.precio.replace('$', ''));
   const compraSection = document.getElementById('compra');
+
   compraSection.innerHTML = `
     <h2>Finalizar Compra</h2>
     <form id="formCompra">
       <input type="hidden" name="libro" value="${libro.titulo}">
-      <input type="hidden" name="precio" value="${libro.precio}">
       <label>Nombre:</label><br>
       <input type="text" name="nombre" required><br><br>
-      <label>Teléfono:</label><br>
-      <input type="text" name="telefono" required><br><br>
-      <label>Domicilio:</label><br>
-      <input type="text" name="domicilio" required><br><br>
+
+      <label>Teléfono :</label><br>
+      <input type="text" name="telefono" pattern="\\d{10}" title="Debe tener exactamente 10 dígitos" required><br><br>
+
+      <label>Domicilio :</label><br>
+      <br><input type="text" name="calle" placeholder="Calle" required><br>
+      <input type="text" name="colonia" placeholder="Colonia" required><br>
+      <input type="text" name="municipio" placeholder="Municipio" required><br>
+      <input type="text" name="estado" placeholder="Estado" required><br><br>
+
+      <label>Cantidad :</label><br>
+      <input type="number" id="cantidadLibros" name="cantidad" value="1" min="1" required><br><br>
+
       <label>Total del Libro:</label><br>
-      <input type="text" value="${libro.precio}" disabled style="background-color:#eee;"><br><br>
+      <input type="text" id="totalLibro" value="${libro.precio}" disabled style="background-color:#eee;"><br><br>
+
       <label>Forma de Pago:</label><br>
-      <select name="pago" required>
+      <select name="pago" id="formaPago" required>
+        <option value=""  </option>
         <option value="Efectivo">Efectivo</option>
         <option value="Tarjeta">Tarjeta</option>
         <option value="Transferencia">Transferencia</option>
       </select><br><br>
+
+      <div id="datosPagoExtra"></div>
+
       <label>Correo Electrónico:</label><br>
       <input type="email" name="correo" required><br><br>
+
       <button type="submit">Finalizar Compra</button>
     </form>
     <br>
     <button onclick="renderizarCompra()">Cancelar</button>
   `;
 
+  const cantidadInput = document.getElementById('cantidadLibros');
+  const totalInput = document.getElementById('totalLibro');
+
+  cantidadInput.addEventListener('input', () => {
+    const cantidad = parseInt(cantidadInput.value) || 1;
+    const total = (precioNumerico * cantidad).toFixed(2);
+    totalInput.value = `$${total}`;
+  });
+
+  const formaPago = document.getElementById('formaPago');
+  const datosPagoExtra = document.getElementById('datosPagoExtra');
+
+  formaPago.addEventListener('change', () => {
+    const tipo = formaPago.value;
+    datosPagoExtra.innerHTML = '';
+
+    if (tipo === 'Tarjeta') {
+      datosPagoExtra.innerHTML = `
+        <label>Número de Tarjeta:</label><br>
+        <input type="text" name="numeroTarjeta" pattern="\\d{16}" title="Debe tener 16 dígitos" required><br><br>
+        <label>Fecha de Expiración:</label><br>
+        <input type="month" name="expiracion" required><br><br>
+        <label>CVV:</label><br>
+        <input type="text" name="cvv" pattern="\\d{3}" title="Debe tener 3 dígitos" required><br><br>
+      `;
+    } else if (tipo === 'Transferencia') {
+      datosPagoExtra.innerHTML = `
+        <label>Nombre del Titular:</label><br>
+        <input type="text" name="titular" required><br><br>
+        <label>Número de Cuenta:</label><br>
+        <input type="text" name="cuenta" pattern="\\d+" required><br><br>
+        <label>Cantidad a Enviar:</label><br>
+        <input type="number" name="cantidadTransferencia" required><br><br>
+        <label>Banco:</label><br>
+        <input type="text" name="banco" required><br><br>
+        <label>Motivo:</label><br>
+        <textarea name="motivo" required></textarea><br><br>
+      `;
+    }
+  });
+
   document.getElementById('formCompra').addEventListener('submit', function(e) {
     e.preventDefault();
+    if (!this.reportValidity()) {
+      alert("Por favor, completa correctamente todos los campos requeridos.");
+      return;
+    }
     emailjs.sendForm('service_1ys9qie', 'template_511qgfc', this)
       .then(() => {
         alert('¡Compra realizada! Revisa tu correo.');
