@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Pedido de Pizza</title>
     <style>
         body {
@@ -68,41 +69,41 @@ button:hover {
     background: #f8e1f4;
     border-radius: 8px;
 }
-    </style>
+        </style>
 </head>
 <body>
     <div id="bienvenida" class="seccion activa">
         <h1>¡Bienvenido a Pizza Doña Pelos!</h1>
-        <p>Gracias por elegirnos para tus antojos, encontraras gran variedad de productos..</p>
+        <p>Gracias por elegirnos para tus antojos, encontrarás gran variedad de productos.</p>
         <button id="comenzar">Comenzar pedido</button>
-        <br>
-        <img src="OIP.jpg" alt="OIP" style="float: left; width: 300px; margin-right: 20px;">
+        <img src="OIP.jpg" alt="Imagen de bienvenida" style="float: left; width: 300px; margin-right: 20px;">
     </div>
+
     <div id="formulario-seccion" class="seccion">
         <h1>Pedidos de Pizza</h1>
         <form id="formulario">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
-            
-            <label for="Fecha">Fecha:</label>
-            <input type="date" id="Fecha" name="Fecha" required>
 
-            <label for="Pizza1">Pizza 1:</label>
-            <select id="Pizza1" name="Pizza1">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <label for="pizza1">Pizza 1:</label>
+            <select id="pizza1" name="pizza1">
                 <option value="10">Mexicana $10</option>
                 <option value="12">Pepperoni $12</option>
                 <option value="11">Hawaiana $11</option>
             </select>
-            
-            <label for="Pizza2">Pizza 2:</label>
-            <select id="Pizza2" name="Pizza2">
+
+            <label for="pizza2">Pizza 2:</label>
+            <select id="pizza2" name="pizza2">
                 <option value="10">Mexicana $10</option>
                 <option value="12">Pepperoni $12</option>
                 <option value="11">Hawaiana $11</option>
             </select>
-            
-            <label for="Pizza3">Pizza 3:</label>
-            <select id="Pizza3" name="Pizza3">
+
+            <label for="pizza3">Pizza 3:</label>
+            <select id="pizza3" name="pizza3">
                 <option value="10">Mexicana $10</option>
                 <option value="12">Pepperoni $12</option>
                 <option value="11">Hawaiana $11</option>
@@ -110,27 +111,28 @@ button:hover {
 
             <h3>Complementos:</h3>
             <div class="checkbox-container">
-                <input type="checkbox" id="queso1" value="20">
-                <label for="queso1">Queso extra $20</label>
-                
-                <input type="checkbox" id="orilla" value="20">
-                <label for="orilla">Orilla rellena $20</label>
-                
-                <input type="checkbox" id="refresco" value="15">
+                <input type="checkbox" id="quesoExtra" name="complementos" value="20">
+                <label for="quesoExtra">Queso extra $20</label>
+
+                <input type="checkbox" id="orillaRellena" name="complementos" value="20">
+                <label for="orillaRellena">Orilla rellena $20</label>
+
+                <input type="checkbox" id="refresco" name="complementos" value="15">
                 <label for="refresco">Refresco $15 litro</label>
-                
-                <input type="checkbox" id="papas" value="35">
+
+                <input type="checkbox" id="papas" name="complementos" value="35">
                 <label for="papas">Papas $35 la orden</label>
             </div>
 
-            <button type="button" id="calcular">Calcular Total</button> 
-            <img src="pizza.jpg" alt="pizza" style="float: left; width: 200px; margin-right: 20px;">
+            <button type="button" id="calcular">Calcular Total</button>
+            <img src="pizza.jpg" alt="Imagen de pizza" style="float: left; width: 200px; margin-right: 20px;">
         </form>
     </div>
+
     <div id="detalle-seccion" class="seccion">
         <h2>Detalle del Pedido</h2>
         <p id="detallePedido"></p>
-        
+
         <h3>Método de Pago:</h3>
         <input type="radio" name="metodoPago" value="Efectivo" id="pagoEfectivo" required>
         <label for="pagoEfectivo">Pago en efectivo</label>
@@ -145,6 +147,7 @@ button:hover {
 
         <button type="button" id="continuarPago">Continuar</button>
     </div>
+
     <div id="domicilio-seccion" class="seccion">
         <h1>Datos para Entrega a Domicilio</h1>
         <form id="domicilioForm">
@@ -157,23 +160,49 @@ button:hover {
             <button type="button" id="continuarDomicilio">Continuar al Pago</button>
         </form>
     </div>
+
     <div id="tarjeta-seccion" class="seccion">
         <h1>Pago con Tarjeta</h1>
-        <form>
+        <form id="tarjetaForm">
             <label for="numeroTarjeta">Número de Tarjeta:</label>
-            <input type="text" id="numeroTarjeta" maxlength="16" required>
+            <input type="text" id="numeroTarjeta" name="numeroTarjeta" maxlength="16" pattern="\d{16}" title="Ingresa 16 dígitos numéricos" required>
 
             <label for="fechaExp">Fecha de Expiración:</label>
-            <input type="text" id="fechaExp" placeholder="MM/AA" required>
+            <input type="text" id="fechaExp" name="fechaExp" placeholder="MM/AA" pattern="(0[1-9]|1[0-2])\/\d{2}" title="Formato MM/AA" required>
 
             <label for="cvv">CVV:</label>
-            <input type="text" id="cvv" maxlength="4" required>
+            <input type="text" id="cvv" name="cvv" maxlength="4" pattern="\d{3,4}" title="Ingresa 3 o 4 dígitos numéricos" required>
 
-            <button type="button" id="finalizarTarjeta">Finalizar Pago</button>
+            <button type="button" id="finalizarTarjeta">Continuar con Comprobante</button>
         </form>
     </div>
-    <div id="efectivo-seccion" class="seccion"></div>
 
+    <div id="efectivo-seccion" class="seccion">
+    </div>
+
+    <div id="feedback-seccion" class="seccion">
+        <h1>¡Gracias por tu pedido!</h1>
+        <p>Por favor, completa tus datos para recibir tu comprobante.</p>
+        <form id="feedbackForm">
+            <label for="nombreCliente">Nombre:</label>
+            <input type="text" id="nombreCliente" name="nombreCliente" required>
+
+            <label for="correoCliente">Correo electrónico:</label>
+            <input type="email" id="correoCliente" name="correoCliente" required>
+
+            <label for="comentario">Comentario:</label>
+            <textarea id="comentario" name="comentario" rows="4"></textarea>
+
+            <button type="submit" id="enviarCorreo">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+    (function(){
+        emailjs.init('service_1ys9qie');
+    })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
