@@ -527,16 +527,28 @@ window.mostrarFormularioCompra = function(indice) {
       datosPagoExtra.innerHTML = `
         <label>Nombre del Titular:</label><br>
         <input type="text" name="titular" required><br><br>
+    
         <label>Número de Cuenta:</label><br>
-        <input type="text" name="cuenta" pattern="\\d+" required><br><br>
+        <input type="text" name="cuenta" pattern="\\d{10,18}" title="Debe contener entre 10 y 18 dígitos numéricos" required><br><br>
+    
         <label>Cantidad a Enviar:</label><br>
-        <input type="number" name="cantidadTransferencia" required><br><br>
+        <input type="number" name="cantidadTransferencia" min="1" step="any" required><br><br>
+    
         <label>Banco:</label><br>
-        <input type="text" name="banco" required><br><br>
+        <select name="banco" required>
+          <option value="">Seleccione un banco</option>
+          <option value="BBVA">BBVA</option>
+          <option value="Santander">Santander</option>
+          <option value="HSBC">HSBC</option>
+          <option value="Scotiabank">Scotiabank</option>
+          <option value="Banorte">Banorte</option>
+          <option value="Banamex">Banamex</option>
+        </select><br><br>
+    
         <label>Motivo:</label><br>
         <textarea name="motivo" required></textarea><br><br>
       `;
-    }
+    }    
   });
 
   document.getElementById('formCompra').addEventListener('submit', function(e) {
