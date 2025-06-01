@@ -319,13 +319,20 @@ document.addEventListener("DOMContentLoaded", () => {
     lista.forEach((libro, indice) => {
       const li = document.createElement("li");
       li.innerHTML = `
-        <img src="${libro.imagen}" alt="${libro.titulo}" style="max-width:80px; margin-right:10px; vertical-align:middle;">
-        <div>
-          <strong>${libro.titulo}</strong> - ${libro.autor}<br>
-          <button onclick="mostrarDescripcion(${indice})">Ver Descripción</button>
-          <button onclick="mostrarResena(${indice})">Reseña</button>
-        </div>
-      `;
+  <div class="libro-card">
+    <img src="${libro.imagen}" alt="${libro.titulo}" class="libro-img">
+    <div class="libro-info">
+      <strong>${libro.titulo}</strong><br>
+      <span>${libro.autor}</span>
+      <div class="botones-libro">
+        <button onclick="mostrarDescripcion(${indice})">Descripción</button>
+        <button onclick="redirigirACompra('${libro.titulo}', '${libro.imagen}', '$390')">Comprar</button>
+        <button onclick="mostrarResena(${indice})">Reseña</button>
+      </div>
+    </div>
+  </div>
+`;
+
       li.style.display = "flex";
       li.style.alignItems = "center";
       li.style.gap = "10px";
@@ -338,12 +345,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const libro = libros[indice];
     const detalleLibro = document.getElementById("detalleLibro");
     detalleLibro.innerHTML = `
-      <h3>${libro.titulo}</h3>
-      <p><em>Autor:</em> ${libro.autor}</p>
-      <img src="${libro.imagen}" alt="${libro.titulo}" style="max-width:200px; display:block; margin-bottom:10px;">
-      <p>${libro.descripcion}</p>
-      <button onclick="navegarA('catalogo')" style="margin-top: 20px;">Volver al Catálogo</button>
-    `;
+  <img src="${libro.imagen}" alt="${libro.titulo}">
+  <div class="info">
+    <h3>${libro.titulo}</h3>
+    <p><em>Autor:</em> ${libro.autor}</p>
+    <p>${libro.descripcion}</p>
+    <button onclick="navegarA('catalogo')">Volver al Catálogo</button>
+  </div>
+`;
     navegarA("descripcion");
   }
 
@@ -351,10 +360,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const libro = libros[indice];
     const listaResenas = document.getElementById("listaResenas");
     listaResenas.innerHTML = `
-      <h3>Reseña de: ${libro.titulo}</h3>
-      <p>${libro.reseña}</p>
-      <button onclick="navegarA('catalogo')" style="margin-top: 20px;">Volver al Catálogo</button>
-    `;
+  <img src="${libro.imagen}" alt="${libro.titulo}">
+  <div class="info">
+    <h3>Reseña de: ${libro.titulo}</h3>
+    <p>${libro.reseña}</p>
+    <button onclick="navegarA('catalogo')">Volver al Catálogo</button>
+  </div>
+`;
     navegarA("resenas");
   }
 
@@ -399,7 +411,7 @@ const librosCompra = [
   { titulo: 'Pretty Monster', imagen:'dark.jpg' , precio: '$350'},
   { titulo: 'Hunt Me Darling', imagen:'hunde.jpg' , precio: '$ 340'},
   { titulo: 'Hide Me Darling', imagen:'hide.jpg' , precio: '$ 330'},
-  { titulo: 'Haunting Adeline', imagen:'adeline.jpg' , precio: ''},
+  { titulo: 'Haunting Adeline', imagen:'adeline.jpg' , precio: '800'},
   { titulo: 'Haunted Love', imagen:'lovdha.jpg' , precio: '$340'},
   { titulo: '365 días', imagen:'365.jpg' , precio: '$ 390'},
   { titulo: 'La Mecanica del Corazón', imagen:'corme.jpg' , precio: '$230'},
@@ -449,6 +461,7 @@ function renderizarCompra() {
     div.style.borderRadius = "8px";
     div.style.width = "200px"; 
     div.style.height = "230px";
+
     librosCompraDiv.appendChild(div);
   });
 }
@@ -458,46 +471,64 @@ window.mostrarFormularioCompra = function(indice) {
   const compraSection = document.getElementById('compra');
 
   compraSection.innerHTML = `
-    <h2>Finalizar Compra</h2>
-    <form id="formCompra">
+    <form id="formCompra" class="form-compra">
+      <h2 style="text-align:center; color:#de5959;">
+        Compra de: <span style="color:#333;">${libro.titulo}</span>
+      </h2>
       <input type="hidden" name="libro" value="${libro.titulo}">
-      <label>Nombre:</label><br>
-      <input type="text" name="nombre" required><br><br>
 
-      <label>Teléfono :</label><br>
-      <input type="text" name="telefono" pattern="\\d{10}" title="Debe tener exactamente 10 dígitos" required><br><br>
+      <label for="nombre">Nombre:</label>
+      <input type="text" name="nombre" class="input-c" placeholder="Tu nombre completo"
+            pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{2,50}$" required
+            title="Solo letras y espacios, mínimo 2 caracteres">
 
-      <label>Domicilio :</label><br>
-      <br><input type="text" name="calle" placeholder="Calle" required><br>
-      <input type="text" name="colonia" placeholder="Colonia" required><br>
-      <input type="text" name="municipio" placeholder="Municipio" required><br>
-      <input type="text" name="estado" placeholder="Estado" required><br><br>
+      <label for="telefono">Teléfono:</label>
+      <input type="text" name="telefono" class="input-c" placeholder="10 dígitos"
+            pattern="\\d{10}" required title="Debe tener exactamente 10 dígitos">
 
-      <label>Cantidad :</label><br>
-      <input type="number" id="cantidadLibros" name="cantidad" value="1" min="1" required><br><br>
+      <label for="calle">Calle:</label>
+      <input type="text" name="calle" class="input-c" required>
 
-      <label>Total del Libro:</label><br>
-      <input type="text" id="totalLibro" value="${libro.precio}" disabled style="background-color:#eee;"><br><br>
+      <label for="colonia">Colonia:</label>
+      <input type="text" name="colonia" class="input-c" required>
 
-      <label>Forma de Pago:</label><br>
-      <select name="pago" id="formaPago" required>
-        <option value=""  </option>
+      <label for="municipio">Municipio:</label>
+      <input type="text" name="municipio" class="input-c" required>
+
+      <label for="estado">Estado:</label>
+      <select name="estado" class="input-c" required>
+        <option value="">Selecciona un estado</option>
+        <option value="Ciudad de México">Ciudad de México</option>
+        <option value="Coahuila">Coahuila</option>
+        <option value="Colima">Colima</option>
+        <option value="Durango">Durango</option>
+        <option value="Estado de México">Estado de México</option>
+        <option value="Guanajuato">Guanajuato</option>
+        <option value="Guerrero">Guerrero</option>
+        <option value="Hidalgo">Hidalgo</option>
+      </select>
+
+      <label for="cantidad">Cantidad:</label>
+      <input type="number" name="cantidad" id="cantidadLibros" class="input-c" value="1" min="1" required>
+
+      <label for="totalLibro">Total del Libro:</label>
+      <input type="text" id="totalLibro" class="input-c" value="$${precioNumerico.toFixed(2)}" disabled>
+
+      <label for="pago">Forma de Pago:</label>
+      <select name="pago" id="formaPago" class="input-c" required>
+        <option value="">Selecciona forma de pago</option>
         <option value="Efectivo">Efectivo</option>
         <option value="Tarjeta">Tarjeta</option>
         <option value="Transferencia">Transferencia</option>
-      </select><br><br>
+      </select>
 
-      <div id="datosPagoExtra"></div>
-
-      <label>Correo Electrónico:</label><br>
-      <input type="email" name="correo" required><br><br>
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" name="correo" class="input-c" placeholder="tucorreo@ejemplo.com" required>
 
       <button type="submit">Finalizar Compra</button>
+      <button type="button" id="limpar" onclick="renderizarCompra()">Cancelar</button>
     </form>
-    <br>
-    <button onclick="renderizarCompra()">Cancelar</button>
   `;
-
   const cantidadInput = document.getElementById('cantidadLibros');
   const totalInput = document.getElementById('totalLibro');
 
@@ -512,45 +543,78 @@ window.mostrarFormularioCompra = function(indice) {
 
   formaPago.addEventListener('change', () => {
     const tipo = formaPago.value;
-    datosPagoExtra.innerHTML = '';
-
+    if (!tipo) return;
+  
+    const contenidoPago = document.getElementById('contenidoPago');
+    contenidoPago.innerHTML = ''; 
+  
     if (tipo === 'Tarjeta') {
-      datosPagoExtra.innerHTML = `
-        <label>Número de Tarjeta:</label><br>
-        <input type="text" name="numeroTarjeta" pattern="\\d{16}" title="Debe tener 16 dígitos" required><br><br>
-        <label>Fecha de Expiración:</label><br>
-        <input type="month" name="expiracion" required><br><br>
-        <label>CVV:</label><br>
-        <input type="text" name="cvv" pattern="\\d{3}" title="Debe tener 3 dígitos" required><br><br>
+      contenidoPago.innerHTML = `
+        <div class="input_container">
+          <label class="input_label">Número de Tarjeta:</label>
+          <input class="input_field" type="text" name="numeroTarjeta" pattern="\\d{16}" required>
+        </div>
+        <div class="split">
+          <div class="input_container">
+            <label class="input_label">Expiración:</label>
+            <input class="input_field" type="month" name="expiracion" required>
+          </div>
+          <div class="input_container">
+            <label class="input_label">CVV:</label>
+            <input class="input_field" type="text" name="cvv" pattern="\\d{3}" required>
+          </div>
+        </div>
       `;
     } else if (tipo === 'Transferencia') {
-      datosPagoExtra.innerHTML = `
-        <label>Nombre del Titular:</label><br>
-        <input type="text" name="titular" required><br><br>
-    
-        <label>Número de Cuenta:</label><br>
-        <input type="text" name="cuenta" pattern="\\d{10,18}" title="Debe contener entre 10 y 18 dígitos numéricos" required><br><br>
-    
-        <label>Cantidad a Enviar:</label><br>
-        <input type="number" name="cantidadTransferencia" min="1" step="any" required><br><br>
-    
-        <label>Banco:</label><br>
-        <select name="banco" required>
-          <option value="">Seleccione un banco</option>
-          <option value="BBVA">BBVA</option>
-          <option value="Santander">Santander</option>
-          <option value="HSBC">HSBC</option>
-          <option value="Scotiabank">Scotiabank</option>
-          <option value="Banorte">Banorte</option>
-          <option value="Banamex">Banamex</option>
-        </select><br><br>
-    
-        <label>Motivo:</label><br>
-        <textarea name="motivo" required></textarea><br><br>
+      contenidoPago.innerHTML = `
+        <div class="input_container">
+          <label class="input_label">Nombre del Titular:</label>
+          <input class="input_field" type="text" name="titular" required>
+        </div>
+        <div class="input_container">
+          <label class="input_label">Número de Cuenta:</label>
+          <input class="input_field" type="text" name="cuenta" pattern="\\d{10,18}" required>
+        </div>
+        <div class="input_container">
+          <label class="input_label">Banco:</label>
+          <select class="input_field" name="banco" required>
+            <option value="">Seleccione un banco</option>
+            <option value="BBVA">BBVA</option>
+            <option value="Santander">Santander</option>
+            <option value="HSBC">HSBC</option>
+            <option value="Scotiabank">Scotiabank</option>
+            <option value="Banorte">Banorte</option>
+            <option value="Banamex">Banamex</option>
+          </select>
+        </div>
+        <div class="input_container">
+          <label class="input_label">Cantidad:</label>
+          <input class="input_field" type="number" name="cantidadTransferencia" min="1" required>
+        </div>
+        <div class="input_container">
+          <label class="input_label">Motivo:</label>
+          <textarea class="input_field" name="motivo" required></textarea>
+        </div>
       `;
-    }    
+    } else if (tipo === 'Efectivo') {
+      contenidoPago.innerHTML = `
+        <div class="input_container">
+          <p style="text-align:center;">El pago en efectivo se realiza contra entrega. Asegúrate de tener el monto exacto disponible.</p>
+        </div>
+      `;
+    }
+  
+    document.getElementById('modalPago').style.display = 'block';
   });
+  function cerrarModal() {
+  document.getElementById('modalPago').style.display = 'none';
+}
 
+document.getElementById('formPagoDetalle').addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('¡Pago procesado correctamente!');
+  cerrarModal();
+});
   document.getElementById('formCompra').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!this.reportValidity()) {
@@ -569,3 +633,19 @@ window.mostrarFormularioCompra = function(indice) {
 document.addEventListener("DOMContentLoaded", () => {
   renderizarCompra();
 });
+window.redirigirACompra = function(titulo, imagen, precio) {
+  const yaExiste = librosCompra.some(libro => libro.titulo === titulo);
+
+  if (!yaExiste) {
+    librosCompra.push({ titulo, imagen, precio });
+  }
+
+  const indiceLibro = librosCompra.findIndex(libro => libro.titulo === titulo);
+
+  navegarA("compra");
+
+  setTimeout(() => {
+    renderizarCompra();
+    mostrarFormularioCompra(indiceLibro);
+  }, 100);
+};
