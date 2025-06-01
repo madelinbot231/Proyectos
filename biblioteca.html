@@ -12,18 +12,24 @@
     <ul>
       <li><a href="#inicio">Inicio</a></li>
       <li><a href="#catalogo">Catálogo</a></li>
-      <li><a href="#compra">Shopping</a></li> 
+      <li><a href="#compra">Shoping</a></li> 
+      <li><a href="#conocenos">Conócenos</a></li>
     </ul>
   </nav>
 </header>
-
 <section id="inicio" class="seccion activa">
-  <div class="contenedor">
-  <h1>Bienvenido a Susurro de las Páginas</h1>
-  <p>Sumérgete en un mundo de historias cautivadoras, donde cada página te llevará a vivir emocionantes 
-    aventuras y apasionantes romances que te mantendrán enganchado.</p>
-  <img src="biblioteca.jpg">
-</div>
+  <div class="contenedor-bienvenida">
+    <div class="bienvenida">
+      <div class="bienvenida-texto">
+        <h1>✨ Bienvenido a <span class="destacado">Susurro de las Páginas</span> ✨</h1>
+        <p>Sumérgete en un universo donde cada historia es una promesa de emoción. Déjate envolver por el aroma de los libros y las palabras que susurran desde cada página.</p>
+        <p>Romance, fantasía, suspenso... aquí encontrarás libros que despiertan sentimientos, alimentan el alma y encienden la imaginación.</p>
+      </div>
+      <div class="bienvenida-imagen">
+        <img src="biblioteca.jpg" alt="Biblioteca" class="animacion-suave">
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="catalogo" class="seccion">
@@ -58,6 +64,22 @@
   <h2>Compra de Libros </h2>
   <div id="librosCompra"></div>
 </section>
+<section id="conocenos" class="seccion">
+  <div class="contenedor">
+    <h2>Conócenos</h2>
+    <p><strong>Susurro de las Páginas</strong> es mucho más que una librería, es un refugio para los amantes de la lectura. Desde novelas románticas hasta emocionantes tramas de suspenso, aquí encontrarás libros que tocan el alma y encienden la imaginación.</p>
+    <p>Nos apasiona fomentar el hábito de la lectura y crear una comunidad que comparte historias, sueños y aventuras en cada página.</p>
+    <h3>📍 Nuestra Ubicación</h3>
+    <p>📚 Calle de los Libros Mágicos #456, Ciudad de Letras, País Literario</p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.736234402008!2d-122.0842496846921!3d37.42206597982561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb0cae9b3d3bb%3A0x4d15f4915c4fdf33!2sGoogleplex!5e0!3m2!1ses-419!2sus!4v1685075389167!5m2!1ses-419!2sus" width="100%" height="300" style="border:0; border-radius: 12px; box-shadow: 0px 4px 10px rgba(0,0,0,0.15);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <p>¡Te esperamos con un café, una sonrisa y un libro que puede cambiar tu vida!</p>
+
+    <h3>📞 Contáctanos</h3>
+    <p>📧 contacto@susurrodelaspaginas.com</p>
+    <p>📱 +56 9 1234 5678</p>
+    <p>🕒 Horario de atención: Lunes a Viernes de 9:00 a 18:00 hrs</p>
+  </div>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
   (function(){
@@ -65,5 +87,13 @@
   })();
 </script>
 <script src="catalogo.js"></script>
+<div id="modalPago" class="modal" style="display: none;">
+  <form id="formPagoDetalle" class="form">
+    <h3 style="text-align:center;">Detalles de Pago</h3>
+    <div id="contenidoPago"></div>
+    <button type="submit" class="purchase--btn">Finalizar Compra</button>
+    <button type="button" onclick="cerrarModal()" class="purchase--btn" style="background: #ccc; color: #050505;">Cancelar</button>
+  </form>
+</div>
 </body>
 </html>
