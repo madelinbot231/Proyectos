@@ -526,3 +526,25 @@ margin-top: 20px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.1);
   animation: fadeInUp 1.2s ease-in-out;
 }
+#descripcion,
+#resenas {
+  background-image: url('https://th.bing.com/th/id/R.35ade406b481c399257ccfb707d26707?rik=Fb1huw0pCHklGA&pid=ImgRaw&r=0.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 60px 20px;
+  position: relative;
+}
+#descripcion::before,
+#resenas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.4); 
+  z-index: 0;
+}
+#detalleLibro,
+#listaResenas {
+  position: relative;
+  z-index: 1;
+}
